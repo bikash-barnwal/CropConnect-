@@ -64,6 +64,37 @@ The review gate requires tests in every feature diff; the repo has none.
       data-fetching component renders loading + error + empty states.
 - [ ] One toast library (drop the other); labels from a constants file.
 
+## Task 6 — Vendor ↔ Farmer chat (secure, real-time, responsive)
+
+Requires Task 1 (test infra). Real-time = Socket.IO on the existing Express server; REST for
+history, socket for live push. Note: on Render free tier the instance sleeps — real-time SLA
+needs a paid instance or keep-alive; the code is identical either way.
+
+**Backend**
+- [ ] Models: `conversation` (farmerId, buyerId, optional productId, unique per pair+product) and
+      `message` (conversationId, senderId, text ≤ 2000 chars, readAt), compound index
+      `conversationId + createdAt`.
+- [ ] REST (envelope contract): `GET /chat/conversations` (mine only), `GET /chat/:id/messages`
+      (paginated), `POST /chat/:id/messages` (fallback when socket down).
+- [ ] Socket.IO: JWT verified on handshake (same secret/blacklist as `auth.middleware.js`);
+      join room per conversation only after participant check; server assigns senderId from the
+      token — never from the client payload.
+- [ ] Security: every query scoped to the authenticated participant (client-supplied conversation
+      ids verified against membership, 404 not 403 on foreign ids); rate-limit sends (per-socket +
+      the existing express-rate-limit for REST); text stored raw, escaped on render (no HTML).
+- [ ] Tests: participant scoping abuse case (buyer C cannot read/join A↔B conversation),
+      handshake with expired/blacklisted token rejected, pagination, oversized message rejected.
+- [ ] `/security-review` — new routes + user-scoped data + new transport (STRIDE per rules/security.md).
+
+**Frontend**
+- [ ] "Chat with farmer" entry on `ProductDetails.jsx`; conversation list + thread view.
+- [ ] Perceived zero lag: optimistic send (message renders immediately, pending state, confirmed
+      on server ack, retry on failure); socket reconnect with backoff; unread badge.
+- [ ] Loading + error + empty states on both list and thread; responsive layout (mobile-first —
+      thread full-screen on mobile, split view on desktop).
+- [ ] Token for the socket handshake read via the central `api.js`/auth layer — never duplicated
+      in components.
+
 ## Deferred / later
 
 - `/api/v1` route versioning + `/api/health` endpoint (breaking change — coordinate FE+BE in one task).
