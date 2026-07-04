@@ -1,0 +1,4 @@
+# .claude/ is tracked (loop-kit config, rules, hooks) — its own .claude/.gitignore
+# excludes machine-local state (state/, settings.local.json, __pycache__).
+node_modules/
+Backend/Logs/*.log

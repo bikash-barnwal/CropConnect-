@@ -1,0 +1,61 @@
+{
+  "$comment": "The ONLY per-project edit surface for the loop-kit. Adapted for CropConnect: Node/Express + Mongoose backend in Backend/, React 19 + Vite frontend in Frontend/. Solo personal project.",
+
+  "envPrefix": "LOOP_",
+  "$comment_envPrefix": "Prefix for every bypass/override env var. LOOP_GATE, LOOP_BYPASS, LOOP_OFFLIMITS, LOOP_ALLOW_PROTECTED, LOOP_AUTOPASS.",
+
+  "profile": "personal",
+  "$comment_profile": "personal = no human checkpoints, verify-green is the pass, PR optional (commit to a feature branch, merge yourself). Switch to 'org' or set humanCheckpoints:[\"ship\"] to require typing approve-ship before every commit.",
+
+  "humanCheckpoints": [],
+  "$comment_humanCheckpoints": "Empty = fully autonomous within the loop: plan auto-approves, commit gate needs marker + review but no human chat approval. Set [\"ship\"] to regain the approve-ship checkpoint.",
+
+  "packageManager": "npm",
+  "$comment_packageManager": "Both workspaces use package-lock.json. Backend and Frontend are separate npm projects — commands use `npm --prefix <dir>`.",
+
+  "sourceRoots": ["Backend", "Frontend/src"],
+  "$comment_sourceRoots": "Dirs the EDIT GATE guards. An edit to a source file under these needs an approved plan-lock.",
+
+  "sourceExts": ["js", "jsx", "mjs", "cjs"],
+  "$comment_sourceExts": "JS-only repo (no TS). Docs/config (.md/.json/.env.example) under sourceRoots edit freely.",
+
+  "testGlobs": [
+    "\\.(test|spec)\\.[mc]?jsx?$",
+    "(^|/)(tests?|__tests__)/"
+  ],
+  "$comment_testGlobs": "Regexes (repo-relative path) identifying test files. EDIT GATE lets tests through without a plan-lock; REVIEW GATE requires at least one match in the diff (or --allow-no-tests for docs/config-only diffs).",
+
+  "protectedPaths": ["Backend/Middlewares/auth.middleware.js"],
+  "$comment_protectedPaths": "Auth middleware is human-owned — every protected route depends on it. Bypass per-edit with LOOP_OFFLIMITS=ack.",
+
+  "protectedBranches": ["main", "master", "develop"],
+  "$comment_protectedBranches": "No source edits while checked out on these — branch off first (feat/, fix/, chore/ ...).",
+
+  "verify": {
+    "frontend": [
+      "node --check Backend/server.js",
+      "npm --prefix Frontend run build"
+    ]
+  },
+  "$comment_verify": "SHIP exit-condition commands. The kit only knows 'python' and 'frontend' stack keys — this repo is all-Node, so every command (backend included) lives under 'frontend'. Frontend lint is deliberately absent: 23 pre-existing eslint errors as of 2026-07-04 — CURRENT-FOCUS.md Task 1 fixes them and adds `npm --prefix Frontend run lint`, `npm --prefix Backend run lint`, and both test commands here.",
+
+  "verifyDirtyPaths": ["Backend", "Frontend/src"],
+  "$comment_verifyDirtyPaths": "Paths VERIFY-STOP checks for uncommitted changes when a false-done is suspected.",
+
+  "integrations": {
+    "docker": false,
+    "husky": false,
+    "codeowners": false,
+    "migrations": { "enabled": false, "dir": "", "testDir": "" }
+  },
+  "$comment_integrations": "MongoDB via Mongoose — no SQL migrations. No docker/husky/codeowners in this repo; flip to \"auto\" if any get added.",
+
+  "conventions": {
+    "apiContract": true,
+    "uiStates": true,
+    "banAny": true,
+    "banThen": true,
+    "maxComponentLines": 200
+  },
+  "$comment_conventions": "apiContract = the standard envelope {status, status_code, message, timestamp, data, error} from rules/api-standards.md — the existing routes predate it; new/touched endpoints adopt it. uiStates = loading+error+empty on every component. banThen = async/await only. maxComponentLines = split threshold."
+}
