@@ -67,8 +67,9 @@ The review gate requires tests in every feature diff; the repo has none.
 ## Task 6 — Vendor ↔ Farmer chat (secure, real-time, responsive)
 
 Requires Task 1 (test infra). Real-time = Socket.IO on the existing Express server; REST for
-history, socket for live push. Note: on Render free tier the instance sleeps — real-time SLA
-needs a paid instance or keep-alive; the code is identical either way.
+history, socket for live push. **Free-tier decision (owner: free services only):** stay on Render
+free + an external keep-alive ping (UptimeRobot free / cron-job.org, 5-min interval) so the
+instance never sleeps — no paid instance, no third-party realtime service.
 
 **Backend**
 - [ ] Models: `conversation` (farmerId, buyerId, optional productId, unique per pair+product) and
@@ -94,6 +95,50 @@ needs a paid instance or keep-alive; the code is identical either way.
       thread full-screen on mobile, split view on desktop).
 - [ ] Token for the socket handshake read via the central `api.js`/auth layer — never duplicated
       in components.
+
+## Task 7 — Performance (free-tier friendly)
+
+**Frontend (bundle is one 784kB chunk today)**
+- [ ] Route-level code-splitting: `React.lazy` + `Suspense` per page in `AppRoutes.jsx`.
+- [ ] One toast library: keep `react-hot-toast`, remove `react-toastify` and its imports.
+- [ ] Remove `styled-components` (Tailwind-only per code-style rules); migrate any styled blocks.
+- [ ] chart.js loaded lazily, only on dashboard routes.
+- [ ] Cloudinary image URLs use `f_auto,q_auto,w_<size>` transforms; explicit width/height to
+      avoid layout shift.
+- [ ] Evidence: build output before/after in PROGRESS.md (target: initial JS < 350kB).
+
+**Backend**
+- [ ] `compression` middleware; `.lean()` on read-only Mongoose queries.
+- [ ] Indexes: `addProductByFarmer` on `farmerId` + `status`; messages per Task 6.
+- [ ] Nodemailer transporter created once at module level, not per request.
+- [ ] Drop redundant per-route `UserModel.findOne` role re-checks (auth middleware already
+      verified role) — one DB round-trip less on most endpoints.
+- [ ] Keep-alive ping configured (UptimeRobot free) + `/api/health` endpoint to ping.
+
+## Task 8 — UI polish: icons + spacing
+
+- [ ] lucide-react is the ONLY icon set — replace mixed/emoji icons; shared `<Icon>` wrapper with
+      fixed size/stroke tokens.
+- [ ] Consistent Tailwind spacing rhythm (4/8px scale): card padding, section gaps, form fields —
+      extract repeated utility runs into shared components (Card, Section, FormField).
+- [ ] Colors exclusively from the UX4G design system palette (rules/code-style.md); one hover
+      treatment project-wide.
+- [ ] Responsive pass: mobile / tablet / desktop on every touched page.
+
+## Task 9 — Trust + engagement v1
+
+**Trust**
+- [ ] Verified-farmer badge: admin-set flag on farmer profile, badge on listings + profile.
+- [ ] Ratings + reviews: buyer can rate/review a product only after a completed order
+      (order-linked, one per order); average shown on listing cards.
+- [ ] Order status timeline (placed → confirmed → delivered) on the order page.
+- [ ] Freshness label from `harvestDate` on listing cards; transparent per-unit + total pricing.
+
+**Engagement**
+- [ ] Surface SeasonalGuide + Weather on the home page (they exist, buried).
+- [ ] Wishlist/favourites for buyers; WhatsApp share button on product details (free share link).
+- [ ] PWA: manifest + service worker (installable on phones; free re-engagement channel).
+- [ ] In-app notification bell fed by order + chat events (poll or socket per Task 6).
 
 ## Deferred / later
 
