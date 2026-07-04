@@ -25,6 +25,17 @@ if not fp:
 rel = L.rel(fp)
 prefix = L.env_prefix()
 
+# Files outside this repo (agent memory, scratchpad, other checkouts) are not this repo's concern —
+# without this, the integration-branch guard below blocks every Write/Edit on the whole machine
+# whenever the repo happens to sit on main.
+_fp_abs = os.path.normcase(os.path.abspath(fp if os.path.isabs(fp) else os.path.join(L.REPO, fp)))
+_repo_abs = os.path.normcase(os.path.abspath(L.REPO))
+try:
+    if os.path.commonpath([_fp_abs, _repo_abs]) != _repo_abs:
+        L.allow()
+except ValueError:  # different drive on Windows
+    L.allow()
+
 
 def bypassed(env_name: str, expect: str) -> bool:
     on = L.env(env_name) == expect
