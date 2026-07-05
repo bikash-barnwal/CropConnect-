@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import AuthInput from '../components/AuthInput';
 import { toast } from 'react-toastify';
@@ -9,21 +8,20 @@ const BASE_URL = `${BASE_API}/forgetPassword/user` // url for generate reset-pas
 
 
 const ForgotPassword = () => {
-    const navigate = useNavigate();
     const { requestPasswordReset, loading, error } = useAuth();
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const result = await requestPasswordReset(email);
         try {
-            if (result.success) {
+            const result = await requestPasswordReset(email);
+            if (result && result.success) {
                 setMessage('Password reset link has been sent to your email.');
-                toast.success("Password reset link send.")
+                toast.success("Password reset link sent.")
             }
-        } catch (error) {
-            toast.error("Fails to send re-send link.")
+        } catch (_err) {
+            toast.error("Failed to send reset link.")
         }
     };
 

@@ -1,8 +1,8 @@
 const express = require("express");
 // const path = require("path");
-const multer = require("multer");
-const fs = require("fs");
-const cloudinary = require("cloudinary").v2;
+// const multer = require("multer");
+// const fs = require("fs");
+// const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -10,7 +10,7 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors")
 
-const PORT = 3000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // calling ConnectToDB fuction database
 const { ConnectToDB } = require("./Config/db");
@@ -24,13 +24,13 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-const path = require('path');
-const morgan = require('morgan')
+// const path = require('path');
+// const morgan = require('morgan')
 
-const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, 'Logs', 'server.log'),
-  { flags: 'a' } // append mode
-);
+// const accessLogStream = fs.createWriteStream(
+//   path.join(__dirname, 'Logs', 'server.log'),
+//   { flags: 'a' } // append mode
+// );
 
 // app.use(morgan('combined', { stream: accessLogStream }));
 
@@ -77,7 +77,11 @@ app.use("/orderProduct", orderProductRoute);
 // set profile Img of user using cloudinary
 app.use("/setProfileImg", profileImgRoute);
 
-app.listen(PORT, () => {
-  ConnectToDB();
-  console.log("Server Started:", PORT);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    ConnectToDB();
+    console.log("Server Started:", PORT);
+  });
+}
+
+module.exports = app;

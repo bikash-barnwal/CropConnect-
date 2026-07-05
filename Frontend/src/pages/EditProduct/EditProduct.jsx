@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const BASE_API = import.meta.env.VITE_BASE_API_URL
 const BASE_URL = `${BASE_API}/addProductByFarmer`
 const EditProduct = () => {
   const { id } = useParams();
-  const { user } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -25,7 +22,6 @@ const EditProduct = () => {
         if (!found) throw new Error('Product not found');
         setFormData(found);
       } catch (err) {
-        setError(err.message);
         toast.error(`Failed to fetch product: ${err.message}`);
       } finally {
         setLoading(false);
@@ -73,7 +69,6 @@ const EditProduct = () => {
       toast.success('Product updated successfully!');
       navigate(`/products/details/${id}`);
     } catch (err) {
-      setError(err.message);
       toast.error(`Update failed: ${err.message}`)
     }
   }

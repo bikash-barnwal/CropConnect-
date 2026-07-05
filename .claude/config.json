@@ -34,6 +34,10 @@
   "verify": {
     "frontend": [
       "node --check Backend/server.js",
+      "npm --prefix Backend run lint",
+      "npm --prefix Backend test",
+      "npm --prefix Frontend run lint",
+      "npm --prefix Frontend test",
       "npm --prefix Frontend run build"
     ]
   },

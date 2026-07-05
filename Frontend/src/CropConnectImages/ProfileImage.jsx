@@ -27,21 +27,12 @@ const ProfileImage = () => {
       });
 
       const data = await res.json();
-      const imageUrl = data.secure_url;
-      setImage(imageUrl);
-
-      // Now send the URL to your backend to save in MongoDB
-      // Use the image URL from the response
-      const { optimizedUrl } = await res.json();
 
       if (!res.ok) {
-        throw new Error('Failed to upload image');
+        throw new Error(data.message || 'Failed to upload image');
       }
 
-      setImage(optimizedUrl);
-
-      const saveData = await saveRes.json();
-      if (!saveRes.ok) throw new Error(saveData.message);
+      setImage(data.optimizedUrl);
       setMessage("Profile image updated!");
     } catch (err) {
       console.error("Upload Error:", err);

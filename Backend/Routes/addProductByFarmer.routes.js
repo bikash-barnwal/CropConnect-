@@ -3,7 +3,6 @@ const express = require("express");
 const addProductByFarmerRoute = express.Router();
 
 const { AddProductByFarmerModel } = require("../Models/addProductByFarmer.model");
-const { FarmerProfileModel } = require("../Models/farmerProfile.model");
 const { UserModel } = require("../Models/user.model");
 const { cartItemModel } = require("../Models/addToCart.model");
 

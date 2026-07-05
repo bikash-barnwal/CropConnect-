@@ -59,14 +59,7 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity < 1) return;
-    setProducts(
-      products.map((product) =>
-        product._id === productId ? { ...product, quantity: newQuantity } : product
-      )
-    );
-  };
+
 
   // ✅ Updated to call DELETE API
   const removeFromCart = async (productId) => {

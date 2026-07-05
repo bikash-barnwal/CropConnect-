@@ -60,7 +60,6 @@ const FarmerProfile = () => {
     toast.info("Redirecting to edit profile...")
     navigate("/profile/farmer/edit")
   }
-  const handleCreate = () => navigate("/profile/farmer/edit")
 
   if (loading) {
     return (

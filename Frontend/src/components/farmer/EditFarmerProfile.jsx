@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import FarmerNavbar from "./FarmerNavbar";
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:3000/farmerProfile" || "https://cropconnect-un44.onrender.com/farmerProfile";
+const BASE_URL = `${import.meta.env.VITE_BASE_API_URL}/farmerProfile`;
 
 const EditFarmerProfile = () => {
     const { user } = useAuth();
@@ -54,7 +54,7 @@ const EditFarmerProfile = () => {
                         documents: farmer.certificationDetails?.documents || [],
                     });
                 }
-            } catch (err) {
+            } catch (_err) {
                 setError("Failed to load profile.");
             } finally {
                 setLoading(false);

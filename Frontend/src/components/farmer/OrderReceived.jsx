@@ -99,7 +99,7 @@ const OrderReceived = () => {
         return "new";
     };
 
-    const createOrderForProduct = async (requestId, productId, quantity, deliveryDate) => {
+    const createOrderForProduct = async (requestId, productId, _quantity, _deliveryDate) => {
         try {
             // API call to create individual product order
             // console.log("Creating order:", { requestId, productId, quantity, deliveryDate });

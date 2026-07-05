@@ -68,7 +68,6 @@ const BuyerProfile = () => {
   }, [user?._id])
 
   const handleEdit = () => navigate("/profile/buyer/edit")
-  const handleCreate = () => navigate("/profile/buyer/create")
 
   if (loading) {
     return (

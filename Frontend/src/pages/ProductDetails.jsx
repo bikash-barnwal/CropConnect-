@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { ArrowLeft, MapPin, Calendar, Package, Truck, Shield, Leaf, Clock, DollarSign } from "lucide-react";
 import FarmerNavbar from "../components/farmer/FarmerNavbar";
 import { toast } from "react-toastify";
@@ -10,7 +9,6 @@ const BASE_URL = `${BASE_API}/addProductByFarmer`
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { user } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -1,10 +1,8 @@
 import React, { useState, useEffect, memo } from "react";
-import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
 
 // Memoize the component to prevent unnecessary re-renders
 const ProfileImg = memo(({ profile, onImageUpdate }) => {
-    const { user } = useAuth();
     const [preview, setPreview] = useState(profile?.profileImage || "/default-avatar.png");
     const [loading, setLoading] = useState(false);
 

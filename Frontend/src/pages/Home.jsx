@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import StatisticalData from "./Creators/StatisticalData";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import Linkedin from "../assets/Linkedin.png"
 import Twitter from "../assets/twitter.png"
 
@@ -64,7 +64,7 @@ const Home = () => {
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10" />
 
-            <motion.div
+            <Motion.div
               className="flex gap-4 whitespace-nowrap"
               animate={{ x: ["0%", "-50%"] }}
               transition={{
@@ -81,7 +81,7 @@ const Home = () => {
                   {state}
                 </div>
               ))}
-            </motion.div>
+            </Motion.div>
           </div>
           <p className="text-xs sm:text-sm text-gray-500 mt-4">
             (Top organic states per APEDA 2022-23)
@@ -165,21 +165,23 @@ const Home = () => {
                 title: "Seasonal Calendar",
                 desc: "Access guides and resources to grow crops effectively each season.",
               },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="bg-green-50 p-6 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center space-y-3"
-              >
-                <Icon className="w-8 h-8 text-green-600" />
-                <p className="font-semibold sm:text-xl text-green-800 text-center">
-                  {title}
-                </p>
-                <p className="hidden sm:block text-sm sm:text-base text-gray-600 leading-relaxed text-center">
-                  {desc}
-                </p>
-
-              </div>
-            ))}
+            ].map(({ icon: _icon, title, desc }) => {
+              const IconComponent = _icon;
+              return (
+                <div
+                  key={title}
+                  className="bg-green-50 p-6 rounded-xl shadow hover:shadow-lg transition flex flex-col items-center space-y-3"
+                >
+                  <IconComponent className="w-8 h-8 text-green-600" />
+                  <p className="font-semibold sm:text-xl text-green-800 text-center">
+                    {title}
+                  </p>
+                  <p className="hidden sm:block text-sm sm:text-base text-gray-600 leading-relaxed text-center">
+                    {desc}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

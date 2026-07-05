@@ -5,7 +5,7 @@ require("dotenv").config()
 
 const orderProductRoute = express.Router();
 
-const { BuyerProfileModel } = require("../Models/buyerProfile.model");
+
 const { FarmerProfileModel } = require("../Models/farmerProfile.model");
 const { OrderProductModel } = require("../Models/orderProduct.model");
 const { UserModel } = require("../Models/user.model");

@@ -86,7 +86,7 @@ farmerProfileRouter.get("/profile-image/:userId", async (req, res) => {
     try {
         const { userId } = req.params
         // Find farmer profile by userId
-        const farmer = await FarmerProfile.findOne({ userId })
+        const farmer = await FarmerProfileModel.findOne({ userId })
         if (!farmer) {
             return res.status(404).json({ message: "Profile not found" })
         }
@@ -105,7 +105,7 @@ farmerProfileRouter.put("/update-profile-image", async (req, res) => {
             return res.status(400).json({ message: "UserId and profileImage are required" })
         }
         // Update or create farmer profile with new image
-        const farmer = await FarmerProfile.findOneAndUpdate({ userId }, { profileImage }, { new: true, upsert: true })
+        const farmer = await FarmerProfileModel.findOneAndUpdate({ userId }, { profileImage }, { new: true, upsert: true })
         res.json({
             message: "Profile image updated successfully",
             profileImage: farmer.profileImage,

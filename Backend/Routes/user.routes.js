@@ -6,7 +6,6 @@ const userRoute = express.Router();
 
 const { UserModel } = require("../Models/user.model");
 const { BlacklistedTokenModel } = require("../Models/blacklistedToken.model")
-const PORT = process.env.PORT || 3000
 
 const jwt = require("jsonwebtoken")
 const { Authentication } = require("../Middlewares/auth.middleware")
@@ -98,7 +97,6 @@ userRoute.post("/signin", async (req, res) => {
 userRoute.post("/logout", Authentication(["farmer", "buyer", "admin"]), async (req, res) => {
   try {
     const userID = req.userID
-    const role = req.role
     const user = await UserModel.findById(userID)
     if (!user) {
       return res.status(409).json({ message: "No account found with this userID." })
@@ -118,7 +116,6 @@ userRoute.post("/logout", Authentication(["farmer", "buyer", "admin"]), async (r
 userRoute.get("/checkMW", Authentication(["farmer", "buyer", "admin"]), async (req, res) => {
   try {
     const userID = req.userID
-    const role = req.role
     // console.log(userID, role)
     const user = await UserModel.findById(userID)
     if (!user) {
