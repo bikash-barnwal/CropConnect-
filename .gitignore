@@ -2,3 +2,5 @@
 # excludes machine-local state (state/, settings.local.json, __pycache__).
 node_modules/
 Backend/Logs/*.log
+.claude/
+note.txt

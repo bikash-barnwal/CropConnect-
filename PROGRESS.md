@@ -30,6 +30,44 @@
 
 ---
 
+## 2026-07-05 — Task 2: Farmer lists crop (backend contract + validation)
+
+### Done
+- Created feature branch `feat/task2-validation`.
+- Created centralized response helper [responseHelper.js](file:///d:/Bikash-personal/CropConnect-/Backend/Utils/responseHelper.js) enforcing standard response/error envelope design.
+- Created custom request body validators [validators.js](file:///d:/Bikash-personal/CropConnect-/Backend/Utils/validators.js) validating fields and rejecting unknown parameters to block mass-assignment vulnerabilities.
+- Refactored [addProductByFarmer.routes.js](file:///d:/Bikash-personal/CropConnect-/Backend/Routes/addProductByFarmer.routes.js):
+  * POST: applies custom schema validator (returning `400` on validation fail), checks for duplicates -> `409 Conflict`, returns `201 Created` with standard envelope.
+  * GET/PATCH/DELETE: refactored response status codes to `200`, enforced ownership checks (unauthorized access to other farmers' products returns `404` to avoid info leaks).
+  * Removed redundant `UserModel` queries to save DB round-trips.
+  * Cleaned up commented logs, debug lines, and `console.error` calls.
+- Configured local Vitest timeouts in [vitest.config.js](file:///d:/Bikash-personal/CropConnect-/Backend/vitest.config.js) to allow `mongodb-memory-server` to download.
+- Created comprehensive integration test suite [addProductByFarmer.test.js](file:///d:/Bikash-personal/CropConnect-/Backend/tests/addProductByFarmer.test.js) checking valid listings, validation/unknown-field rejections, duplicates, ownership boundaries, and CRUD workflows.
+
+### Status
+- [x] Step 1 — Schema design
+- [x] Step 2 — POST endpoint refactor
+- [x] Step 3 — Other endpoints refactor + envelope helper
+- [x] Step 4 — Cleanup console/dead code
+- [x] Step 5 — Write tests (create, validate, authorize, CRUD)
+- [x] Step 6 — Verify + commit
+
+### Verification
+- node --check Backend/server.js: PASS
+- npm --prefix Backend run lint: PASS
+- npm --prefix Backend test: PASS (12/12 passing)
+- npm --prefix Frontend run lint: PASS
+- npm --prefix Frontend test: PASS
+- npm --prefix Frontend run build: PASS
+
+### Next
+- CURRENT-FOCUS.md Task 3: Vendor browses + carts crops
+
+### Open questions
+- none
+
+---
+
 ## 2026-07-04 — Loop-kit adapted to CropConnect
 
 ### Done
