@@ -1,3 +1,7 @@
+const dns = require("dns");
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder("ipv4first");
+}
 const express = require("express");
 // const path = require("path");
 // const multer = require("multer");
@@ -48,7 +52,9 @@ app.use(express.json());
 app.use(cors({
   origin: [
     "https://crop-connect-zeta.vercel.app",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175"
   ],
   credentials: true
 }))

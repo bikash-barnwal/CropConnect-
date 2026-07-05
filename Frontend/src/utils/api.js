@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://cropconnect-un44.onrender.com';
+const BASE_URL = import.meta.env.VITE_BASE_API_URL || 'https://cropconnect-un44.onrender.com';
 
 const api = axios.create({
     baseURL: BASE_URL,
